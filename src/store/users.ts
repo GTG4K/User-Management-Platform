@@ -2,16 +2,20 @@ import {defineStore} from "pinia";
 
 export const useUsersStore = defineStore('users', {
     state: () => ({
-        users: null, // Initial user state is null
+        users: {}, // Initial user state is null
     }),
     actions: {
-        setUsers(users: object) {
-            this.users = users
-        }
+        setUsers(page, users) {
+            this.users[page] = users
+        },
     },
     getters: {
         getUsers(): object | null {
             return this.users
-        }
+        },
+        getUsersByPage: (state) => (page) => {
+            // Replace this with your logic to find data by id
+            return state.users[page];
+        },
     },
 })
