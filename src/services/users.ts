@@ -13,4 +13,14 @@ async function getUsers(page: number = 1) {
     }
 }
 
+async function addUser(data) {
+    try {
+        const response = await instance.post(`users/add`, data);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {getUsers}

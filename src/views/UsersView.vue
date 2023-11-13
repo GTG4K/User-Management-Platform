@@ -10,6 +10,7 @@ import BaseText from "../components/base/BaseText.vue";
 const userStore = useUsersStore();
 const currentPage = ref<number>(1);
 const searchQuery = ref<string>("");
+
 let totalUsers: number | null = null
 let limit: number | null = 12
 const usersAreLoading = ref<boolean>(true);
@@ -18,8 +19,8 @@ onMounted(async () => {
   try {
     if (!userStore.getUsersByPage(currentPage.value)) {
       const {users, total} = await getUsers(currentPage.value);
-      userStore.setUsers(currentPage.value, users)
       totalUsers = total
+      userStore.setUsers(currentPage.value, users)
     }
     usersAreLoading.value = false;
   } catch (error) {
@@ -33,8 +34,8 @@ watch(currentPage, async () => {
   try {
     if (!userStore.getUsersByPage(currentPage.value)) {
       const {users, total} = await getUsers(currentPage.value);
-      userStore.setUsers(currentPage.value, users)
       totalUsers = total
+      userStore.setUsers(currentPage.value, users)
     }
     usersAreLoading.value = false;
   } catch (error) {

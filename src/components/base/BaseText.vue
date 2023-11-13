@@ -1,20 +1,31 @@
 <script setup lang="ts">
+import {computed} from "vue";
+
 const props = defineProps<{
   "modelValue": string,
   "placeholder": string,
+  "type": string | null,
+  "error": string | null,
   "icon": string
 }>()
-const emits = defineEmits(['update:modelValue'])
+const emits = defineEmits(['update:modelValue', 'click'])
 const updateInput = (e) => {
   emits('update:modelValue', e.target.value);
 }
+const inputStyling = computed(() => {
+  return {
+    "border border-red-500": props.error,
+    "border border-transparent": !props.error
+  }
+})
 
 </script>
 
 <template>
-  <div class="bg-gray-card rounded-md flex items-center p-3">
+  <div class="bg-gray-card rounded-md flex items-center p-3" :class="inputStyling" @click="emits('click')">
     <i v-if="props.icon" :class="`fa-solid fa-${props.icon} text-accent`"/>
-    <input type="text" :value="props.modelValue" :placeholder="props.placeholder" @input="updateInput"
-            class="bg-transparent flex-grow pl-3 outline-0 text-white-slate"/>
+    <input :type="props.type || 'text'" :value="props.modelValue" :placeholder="props.placeholder" @input="updateInput"
+           class="bg-transparent flex-grow pl-3 outline-0 text-white-slate"/>
   </div>
+  <p v-if="props.error" class="text-red-500 text-xs">{{ props.error }}</p>
 </template>
