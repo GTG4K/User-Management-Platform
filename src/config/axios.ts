@@ -7,4 +7,12 @@ const instance: AxiosInstance = axios.create({
     },
 });
 
-export default instance
+const multipartInstance: AxiosInstance = axios.create({
+    baseURL: "https://dummyjson.com/",
+    headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json',
+    },
+});
+
+export {instance, multipartInstance}

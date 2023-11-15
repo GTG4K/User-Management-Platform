@@ -6,10 +6,13 @@ import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent.vue";
 import UserComponent from "../components/UserComponent.vue";
 import PageSelectorComponent from "../components/PageSelectorComponent.vue";
 import BaseText from "../components/base/BaseText.vue";
+import {useRouter} from "vue-router";
 
 const userStore = useUsersStore();
 const currentPage = ref<number>(1);
-const searchQuery = ref<string>("");
+const searchValue = ref<string | null>("")
+
+const router = useRouter()
 
 let totalUsers: number | null = null
 let limit: number | null = 12
@@ -45,6 +48,7 @@ watch(currentPage, async () => {
 })
 
 const userList = computed(() => {
+  if (searchValue.value) return userStore.getUsersBySearch(searchValue.value)
   return userStore.getUsersByPage(currentPage.value)
 })
 
@@ -68,15 +72,15 @@ const lastPage = () => {
 <template>
   <div class="md:px-medium sm:px-small px-mobile flex flex-col gap-3 pb-3">
     <h2 class="text-accent bg-gray-card rounded-md text-2xl p-2 text-center">List of all users</h2>
-    <BaseText v-model="searchQuery" placeholder="Search.." icon="magnifying-glass"/>
+    <BaseText type="text" v-model="searchValue" placeholder="Search.." icon="magnifying-glass" error=""/>
     <div class="w-fit m-auto " v-if="usersAreLoading">
       <LoadingSpinnerComponent/>
     </div>
-    <div class="bg-gray-card rounded-md p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+    <div class="bg-gray-card rounded-md p-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-5"
          v-else>
-      <UserComponent v-for="user in userList" :key="user.id" :user="user"/>
+      <UserComponent v-for="user in userList" :key="user.id" :user="user" @click="router.push(`/users/${user.id}`)"/>
     </div>
-    <PageSelectorComponent @firstPage="firstPage" @lastPage="lastPage" @previousPage="previousPage"
+    <PageSelectorComponent v-if="!searchValue" @firstPage="firstPage" @lastPage="lastPage" @previousPage="previousPage"
                            @nextPage="nextPage" :currentPage="currentPage"/>
   </div>
 </template>

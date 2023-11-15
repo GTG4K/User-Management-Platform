@@ -8,6 +8,7 @@ const props = defineProps<{
   "error": string | null,
   "icon": string
 }>()
+
 const emits = defineEmits(['update:modelValue', 'click'])
 const updateInput = (e) => {
   emits('update:modelValue', e.target.value);

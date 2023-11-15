@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import BaseText from "./BaseText.vue";
-import {ref} from "vue";
 
 const props = defineProps<{
   header: String,
