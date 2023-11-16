@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import BaseDialog from "./base/BaseDialog.vue";
 import {deleteUserById} from "../services/users.ts";
-import {useUsersStore} from "../store/users.ts";
+import {useUserStore} from "../store/users.ts";
 import {useRouter} from "vue-router";
 import {computed} from "vue";
 
-const userStore = useUsersStore();
+const userStore = useUserStore();
 const router = useRouter();
 
 const props = defineProps<{
@@ -13,18 +13,18 @@ const props = defineProps<{
   firstName: string
 }>()
 const emits = defineEmits(['closeDialog'])
-const closeDialog = () => {
+const closeDialog = (): void => {
   emits("closeDialog")
 }
 
-const deleteUser = async () => {
-  const deletedUser = await deleteUserById(props.userID)
+const deleteUser = async (): Promise<void> => {
+  await deleteUserById(props.userID)
   userStore.deleteUser(props.userID)
-  router.push({name: 'users'})
+  await router.push({name: 'users'})
   emits("closeDialog")
 }
 
-const dialogHeader = computed(() => {
+const dialogHeader = computed<string>(() => {
   return `delete user: ${props.firstName}?`
 })
 

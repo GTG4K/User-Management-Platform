@@ -4,11 +4,11 @@ import BaseDialog from "./base/BaseDialog.vue";
 import {ref} from "vue";
 import {addUser} from "../services/users.ts";
 import BaseImage from "./base/BaseImage.vue";
-import {useUsersStore} from "../store/users.ts";
+import {useUserStore} from "../store/users.ts";
 import {useRouter} from "vue-router";
-import {isEmail, isEmpty, isNumber, validationPassed} from "../Util/validate.ts";
+import {isEmail, isEmpty, isNumber, validationPassed} from "../Util/validators/validate.ts";
 
-const userStore = useUsersStore()
+const userStore = useUserStore()
 const router = useRouter()
 
 const firstName = ref<string>("")
@@ -19,7 +19,7 @@ const email = ref<string>("")
 const emailError = ref<string>("")
 const age = ref<number>(0)
 const ageError = ref<string>("")
-const image = ref<File | null>(null);
+const image = ref<string | ArrayBuffer | null>(null);
 const imageError = ref<string>("")
 
 const emits = defineEmits(['closeDialog'])
@@ -49,19 +49,19 @@ const generateUserData = (): FormData => {
   // userData.append('image', image.value)
   return userData
 }
-const handleAddUser = async () => {
+const handleAddUser = async (): Promise<void> => {
   if (formIsValid()) {
     const userData = generateUserData()
     const newUser = await addUser(userData)
     userStore.addUser(newUser);
-    router.push(`/users/${newUser.id}`)
+    await router.push(`/users/${newUser.id}`)
     closeDialog()
   }
 }
-const closeDialog = () => {
+const closeDialog = (): void => {
   emits("closeDialog")
 }
-const clearErrors = () => {
+const clearErrors = (): void => {
   firstNameError.value = ""
   lastNameError.value = ""
   ageError.value = ""

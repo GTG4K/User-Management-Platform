@@ -2,12 +2,12 @@
 import {ref} from "vue";
 
 const props = defineProps<{
-  'modelValue': File,
+  'modelValue': string | ArrayBuffer | null,
   "error": string | null,
 }>();
 const emits = defineEmits(['update:modelValue']);
 
-const uploadedImage = ref(props.modelValue || null);
+const uploadedImage = ref<string | ArrayBuffer | null>(props.modelValue ?? null);
 
 const updateFile = (e: Event) => {
   const fileInput = e.target as HTMLInputElement;
@@ -20,6 +20,7 @@ const updateFile = (e: Event) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       uploadedImage.value = fileReader.result
+      console.log(typeof fileReader.result)
     }
     fileReader.readAsDataURL(firstFile);
   }

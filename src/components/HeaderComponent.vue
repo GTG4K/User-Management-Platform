@@ -1,29 +1,30 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref, Ref} from "vue";
-
-const menuIsOpen = ref<boolean>(false);
-const navigation: Ref<HTMLElement | null> = ref(null);
-const navigationIcon: Ref<HTMLElement | null> = ref(null);
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
 const emits = defineEmits(['openAddUser']);
 
-const toggleMenu = () => {
+const menuIsOpen = ref<boolean>(false);
+const navigation = ref<HTMLElement | null>(null);
+const navigationIcon = ref<HTMLElement | null>(null);
+
+
+const toggleMenu = (): void => {
   menuIsOpen.value = !menuIsOpen.value
 }
 
-const openAddUser = () => {
+const openAddUser = (): void => {
   emits('openAddUser')
   toggleMenu()
 }
 
-const menuStyling = computed(() => {
+const menuStyling = computed<object>(() => {
   return {
     'translate-x-0': menuIsOpen.value,
     'translate-x-full': !menuIsOpen.value
   }
 })
 
-const handleClickOutside = (e: MouseEvent) => {
+const handleClickOutside = (e: MouseEvent): void => {
   const targetNode = e.target as Node | null;
 
   if (menuIsOpen.value && navigation.value && navigationIcon.value) {

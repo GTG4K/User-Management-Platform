@@ -2,7 +2,6 @@
 const props = defineProps<{
   currentPage: number
 }>()
-
 const emits = defineEmits(['firstPage', 'previousPage', 'nextPage', 'lastPage'])
 </script>
 

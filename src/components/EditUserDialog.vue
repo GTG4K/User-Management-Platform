@@ -2,17 +2,18 @@
 import BaseText from "./base/BaseText.vue";
 import BaseDialog from "./base/BaseDialog.vue";
 import {ref} from "vue";
-import {addUser, editUser} from "../services/users.ts";
+import {editUser} from "../services/users.ts";
 import BaseImage from "./base/BaseImage.vue";
-import {useUsersStore} from "../store/users.ts";
-import {isEmail, isEmpty, isNumber, validationPassed} from "../Util/validate.ts";
-import {IUser} from "../ts/user.interface.ts";
+import {useUserStore} from "../store/users.ts";
+import {isEmail, isEmpty, isNumber, validationPassed} from "../Util/validators/validate.ts";
+import {IUser} from "../ts/interfaces/user.interface.ts";
 
 const props = defineProps<{
   user: IUser,
 }>()
+const emits = defineEmits(['closeDialog'])
 
-const userStore = useUsersStore()
+const userStore = useUserStore()
 
 const firstName = ref<string>(props.user.firstName)
 const firstNameError = ref<string>("")
@@ -22,10 +23,10 @@ const email = ref<string>(props.user.email)
 const emailError = ref<string>("")
 const age = ref<number>(props.user.age)
 const ageError = ref<string>("")
-const image = ref<File | null>(null);
+const image = ref<string | ArrayBuffer | null
+>(null);
 const imageError = ref<string>("")
 
-const emits = defineEmits(['closeDialog'])
 
 const formIsValid = (): boolean => {
   clearErrors()
@@ -51,7 +52,7 @@ const generateUserData = (): FormData => {
   // userData.append('image', image.value)
   return userData
 }
-const handleAddUser = async () => {
+const handleAddUser = async (): Promise<void> => {
   if (formIsValid()) {
     const userData = generateUserData()
     const updatedUser: IUser = await editUser(props.user.id, userData)
@@ -59,10 +60,10 @@ const handleAddUser = async () => {
     closeDialog()
   }
 }
-const closeDialog = () => {
+const closeDialog = (): void => {
   emits("closeDialog")
 }
-const clearErrors = () => {
+const clearErrors = (): void => {
   firstNameError.value = ""
   lastNameError.value = ""
   ageError.value = ""

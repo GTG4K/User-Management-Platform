@@ -1,66 +1,66 @@
 <script setup lang="ts">
 import {getUsers} from "../services/users.ts";
-import {useUsersStore} from "../store/users.ts";
+import {useUserStore} from "../store/users.ts";
 import {computed, onMounted, ref, watch} from "vue";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent.vue";
 import UserComponent from "../components/UserComponent.vue";
 import PageSelectorComponent from "../components/PageSelectorComponent.vue";
 import BaseText from "../components/base/BaseText.vue";
 import {useRouter} from "vue-router";
-
-const userStore = useUsersStore();
-const currentPage = ref<number>(1);
-const searchValue = ref<string>("")
+import {IUser} from "../ts/interfaces/user.interface.ts";
 
 const router = useRouter()
+const userStore = useUserStore();
+
+const currentPage = ref<number>(1);
+const searchValue = ref<string>("")
+const usersAreLoading = ref<boolean>(true);
 
 const limit: number = 12
-const total = computed(() => {
+
+const total = computed<number>(() => {
   return userStore.getTotalUsers
 })
 
-const usersAreLoading = ref<boolean>(true);
-
 onMounted(async () => {
-  getCurrentPageUsers()
+  await getCurrentPageUsers()
 })
 
 watch(currentPage, async () => {
-  getCurrentPageUsers()
+  await getCurrentPageUsers()
 })
 
-const getCurrentPageUsers = async () => {
+const getCurrentPageUsers = async (): Promise<void> => {
   usersAreLoading.value = true;
-  try {
-    if (!userStore.getUsersByPage(currentPage.value)) {
+  if (!userStore.getUsersByPage(currentPage.value)) {
+    try {
       const {users, total} = await getUsers(currentPage.value);
       userStore.setTotal(total)
       userStore.setUsers(currentPage.value, users)
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    usersAreLoading.value = false;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    usersAreLoading.value = false;
   }
+  usersAreLoading.value = false;
 }
 
-const userList = computed(() => {
+const userList = computed<IUser[]>(() => {
   if (searchValue.value) return userStore.getUsersBySearch(searchValue.value)
   return userStore.getUsersByPage(currentPage.value)
 })
 
-const firstPage = () => {
+const firstPage = (): void => {
   currentPage.value = 1
 }
-const previousPage = () => {
+const previousPage = (): void => {
   if (currentPage.value - 1 === 0) return
   currentPage.value -= 1
 }
-const nextPage = () => {
+const nextPage = (): void => {
   if (currentPage.value === Math.ceil(total.value / limit)) return
   currentPage.value += 1
 }
-const lastPage = () => {
+const lastPage = (): void => {
   currentPage.value = Math.ceil(total.value / limit)
 }
 

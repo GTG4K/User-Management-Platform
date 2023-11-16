@@ -1,11 +1,10 @@
 import {IUser} from "../user.interface.ts";
-interface IUsersByPage {
+
+export interface IUsersByPage {
     [key: number]: IUser[];
 }
 
-interface IUsersState {
+export interface IUserState {
     users: IUsersByPage
     total: number
 }
-
-export type {IUsersByPage, IUsersState}

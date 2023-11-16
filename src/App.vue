@@ -6,7 +6,7 @@ import {ref} from "vue";
 
 const addUserIsActive = ref<boolean>(false);
 
-const toggleAddUserDialog = () => {
+const toggleAddUserDialog = (): void => {
   addUserIsActive.value = !addUserIsActive.value
 }
 </script>

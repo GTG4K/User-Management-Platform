@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
     id: number;
     firstName: string;
     lastName: string;
@@ -59,5 +59,3 @@ interface IUser {
     ssn: string;
     userAgent: string;
 }
-
-export type {IUser}

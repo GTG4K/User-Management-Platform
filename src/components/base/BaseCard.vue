@@ -9,7 +9,7 @@ const props = defineProps<{
 }>()
 
 const router = useRouter()
-const changeRoute = () => {
+const changeRoute = (): void => {
   if (props.route) router.push(props.route)
 }
 </script>

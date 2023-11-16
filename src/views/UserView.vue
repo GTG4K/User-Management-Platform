@@ -2,19 +2,19 @@
 import UserComponent from "../components/UserComponent.vue";
 import {useRoute, useRouter} from "vue-router";
 import {onMounted, ref, watch} from "vue";
-import {useUsersStore} from "../store/users.ts";
+import {useUserStore} from "../store/users.ts";
 import LoadingSpinnerComponent from "../components/LoadingSpinnerComponent.vue";
 import {getUserById, getUsers} from "../services/users.ts";
 import ConfirmDeleteDialog from "../components/ConfirmDeleteDialog.vue";
-import {IUser} from "../ts/user.interface.ts";
+import {IUser} from "../ts/interfaces/user.interface.ts";
 import EditUserDialog from "../components/EditUserDialog.vue";
 
 const route = useRoute()
 const router = useRouter()
-const userStore = useUsersStore();
+const userStore = useUserStore();
 
 const userID = ref<number>(Number(route.params.id))
-const user = ref<IUser | undefined>();
+const user = ref<IUser | null>(null);
 const userIsLoading = ref<boolean>(true);
 const deleteDialogActive = ref<boolean>(false);
 const editUserDialogActive = ref<boolean>(false);
@@ -29,10 +29,10 @@ watch(() => route.params.id, () => {
   refreshUserDetails()
 })
 
-const toggleDeleteDialog = () => {
+const toggleDeleteDialog = (): void => {
   deleteDialogActive.value = !deleteDialogActive.value
 }
-const refreshUserDetails = async () => {
+const refreshUserDetails = async (): Promise<void> => {
   userIsLoading.value = true
   userID.value = Number(route.params.id)
   if (userStore.getUserById(userID.value)) {
@@ -42,10 +42,10 @@ const refreshUserDetails = async () => {
   }
   user.value = await getUserById(userID.value)
   userIsLoading.value = false
-  getCurrentPageUsers()
+  await getCurrentPageUsers()
 }
 
-const getCurrentPageUsers = async () => {
+const getCurrentPageUsers = async (): Promise<void> => {
   const userPage = Math.ceil(userID.value / usersPerPage)
   try {
     if (!userStore.getUsersByPage(userPage)) {
@@ -59,18 +59,18 @@ const getCurrentPageUsers = async () => {
   }
 }
 
-const nextUser = () => {
+const nextUser = (): void => {
   router.push(`/users/${userID.value + 1}`)
 }
 
-const previousUser = () => {
+const previousUser = (): void => {
   if (userID.value - 1 !== 0) router.push(`/users/${userID.value - 1}`)
 }
 
-const toggleDeleteUserDialog = () => {
+const toggleDeleteUserDialog = (): void => {
   deleteDialogActive.value = !deleteDialogActive.value
 }
-const toggleEditUserDialog = () => {
+const toggleEditUserDialog = (): void => {
   refreshUserDetails()
   editUserDialogActive.value = !editUserDialogActive.value
 }

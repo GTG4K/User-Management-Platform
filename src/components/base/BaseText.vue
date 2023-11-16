@@ -10,12 +10,13 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['update:modelValue', 'click'])
-const updateInput = (e: Event) => {
+const updateInput = (e: Event): void => {
   if (e.target instanceof HTMLInputElement) {
     emits('update:modelValue', e.target.value);
   }
 }
-const inputStyling = computed(() => {
+
+const inputStyling = computed<object>(() => {
   return {
     "border border-red-500": props.error,
     "border border-transparent": !props.error

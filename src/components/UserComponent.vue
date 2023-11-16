@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {computed, onMounted} from "vue";
+import {computed} from "vue";
+import {IUser} from "../ts/interfaces/user.interface.ts";
 
 const props = defineProps<{
-  user: any
+  user: IUser
 }>()
 
 const image = computed<string>(() => {
