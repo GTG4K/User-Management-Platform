@@ -10,19 +10,22 @@ import {useRouter} from "vue-router";
 
 const userStore = useUsersStore();
 const currentPage = ref<number>(1);
-const searchValue = ref<string | null>("")
+const searchValue = ref<string>("")
 
 const router = useRouter()
 
-let totalUsers: number | null = null
-let limit: number | null = 12
+const limit: number = 12
+const total = computed(()=>{
+  return userStore.getTotalUsers
+})
+
 const usersAreLoading = ref<boolean>(true);
 
 onMounted(async () => {
   try {
     if (!userStore.getUsersByPage(currentPage.value)) {
       const {users, total} = await getUsers(currentPage.value);
-      totalUsers = total
+      userStore.setTotal(total)
       userStore.setUsers(currentPage.value, users)
     }
     usersAreLoading.value = false;
@@ -37,7 +40,7 @@ watch(currentPage, async () => {
   try {
     if (!userStore.getUsersByPage(currentPage.value)) {
       const {users, total} = await getUsers(currentPage.value);
-      totalUsers = total
+      userStore.setTotal(total)
       userStore.setUsers(currentPage.value, users)
     }
     usersAreLoading.value = false;
@@ -60,11 +63,11 @@ const previousPage = () => {
   currentPage.value -= 1
 }
 const nextPage = () => {
-  if (currentPage.value === Math.ceil(totalUsers / limit)) return
+  if (currentPage.value === Math.ceil(total.value / limit)) return
   currentPage.value += 1
 }
 const lastPage = () => {
-  currentPage.value = Math.ceil(totalUsers / limit)
+  currentPage.value = Math.ceil(total.value / limit)
 }
 
 </script>

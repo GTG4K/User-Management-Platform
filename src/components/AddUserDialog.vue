@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import BaseText from "./base/BaseText.vue";
 import BaseDialog from "./base/BaseDialog.vue";
 import {ref} from "vue";
@@ -7,67 +6,52 @@ import {addUser} from "../services/users.ts";
 import BaseImage from "./base/BaseImage.vue";
 import {useUsersStore} from "../store/users.ts";
 import {useRouter} from "vue-router";
+import {isEmail, isEmpty, isNumber, validationPassed} from "../Util/validate.ts";
 
 const userStore = useUsersStore()
 const router = useRouter()
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const firstName = ref<string>("")
 const firstNameError = ref<string>("")
-
 const lastName = ref<string>("")
 const lastNameError = ref<string>("")
-
 const email = ref<string>("")
 const emailError = ref<string>("")
-
-const age = ref<number | null>(null)
+const age = ref<number>(0)
 const ageError = ref<string>("")
-
-const image = ref(null);
+const image = ref<File | null>(null);
 const imageError = ref<string>("")
 
 const emits = defineEmits(['closeDialog'])
 
-const handleAddUser = async () => {
-  let validationPassed = true
+const formIsValid = (): boolean => {
   clearErrors()
 
-  if (firstName.value.trim().length === 0) {
-    validationPassed = false;
-    firstNameError.value = "First name is required"
-  }
-  if (lastName.value.trim().length === 0) {
-    validationPassed = false;
-    lastNameError.value = "Last name is required"
-  }
-  if (!emailRegex.test(email.value.trim())) {
-    validationPassed = false;
-    emailError.value = "Email formatted incorrectly"
-  }
-  if (email.value.trim().length === 0) {
-    validationPassed = false;
-    emailError.value = "Email is required"
-  }
-  if (!age.value) {
-    validationPassed = false;
-    ageError.value = "Age is required"
-  }
-  if (!image.value) {
-    validationPassed = false;
-    imageError.value = "Image is required"
-  }
+  emailError.value = isEmail(email.value);
+  ageError.value = isNumber(age.value);
+  firstNameError.value = isEmpty(firstName.value);
+  lastNameError.value = isEmpty(lastName.value);
+  ageError.value = isEmpty(String(age.value));
+  emailError.value = isEmpty(email.value);
 
-  if (validationPassed) {
-    const userData = new FormData();
-    userData.append('firstName', firstName.value);
-    userData.append('lastName', lastName.value);
-    userData.append('age', age.value);
-    userData.append('email', email.value);
-    // I don't think dummyjson accepts multipart/formdata
-    // userData.append('image', image.value)
 
+  return validationPassed([firstNameError.value, lastNameError.value, emailError.value, ageError.value])
+}
+
+const generateUserData = (): FormData => {
+  const userData = new FormData();
+  userData.append('firstName', firstName.value);
+  userData.append('lastName', lastName.value);
+  userData.append('age', String(age.value));
+  userData.append('email', email.value);
+  // I don't think dummyjson accepts multipart/formdata on the user routes,
+  // If it did, I would also send the image File from the user and store it in the user store
+  // userData.append('image', image.value)
+  return userData
+}
+const handleAddUser = async () => {
+  if (formIsValid()) {
+    const userData = generateUserData()
     const newUser = await addUser(userData)
     userStore.addUser(newUser);
     router.push(`/users/${newUser.id}`)

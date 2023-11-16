@@ -2,7 +2,7 @@
 import {computed} from "vue";
 
 const props = defineProps<{
-  "modelValue": string,
+  "modelValue": string | number,
   "placeholder": string,
   "type": string | null,
   "error": string | null,
@@ -10,8 +10,10 @@ const props = defineProps<{
 }>()
 
 const emits = defineEmits(['update:modelValue', 'click'])
-const updateInput = (e) => {
-  emits('update:modelValue', e.target.value);
+const updateInput = (e: Event) => {
+  if (e.target instanceof HTMLInputElement) {
+    emits('update:modelValue', e.target.value);
+  }
 }
 const inputStyling = computed(() => {
   return {

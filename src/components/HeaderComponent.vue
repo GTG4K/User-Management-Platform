@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, Ref} from "vue";
 
 const menuIsOpen = ref<boolean>(false);
-const navigation = ref(null);
-const navigationIcon = ref(null);
+const navigation: Ref<HTMLElement | null> = ref(null);
+const navigationIcon: Ref<HTMLElement | null> = ref(null);
 
 const emits = defineEmits(['openAddUser']);
 
@@ -23,9 +23,13 @@ const menuStyling = computed(() => {
   }
 })
 
-const handleClickOutside = (e) => {
-  if (menuIsOpen.value && !navigation.value.contains(e.target) && !navigationIcon.value.contains(e.target)) {
-    toggleMenu()
+const handleClickOutside = (e: MouseEvent) => {
+  const targetNode = e.target as Node | null;
+
+  if (menuIsOpen.value && navigation.value && navigationIcon.value) {
+    if (!navigation.value.contains(targetNode) && !navigationIcon.value.contains(targetNode)) {
+      toggleMenu()
+    }
   }
 }
 

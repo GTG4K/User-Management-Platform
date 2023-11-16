@@ -13,7 +13,7 @@ async function getUsers(page: number = 1) {
     }
 }
 
-async function addUser(data) {
+async function addUser(data: FormData) {
     try {
         const response = await multipartInstance.post(`users/add`, data);
         console.log(response.data)

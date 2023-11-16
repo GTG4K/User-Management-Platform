@@ -9,18 +9,20 @@ const emits = defineEmits(['update:modelValue']);
 
 const uploadedImage = ref(props.modelValue || null);
 
-const updateFile = (e) => {
-  const files = e.target.files;
-  const fileReader = new FileReader();
+const updateFile = (e: Event) => {
+  const fileInput = e.target as HTMLInputElement;
+  const files = fileInput.files;
 
-  const firstFile = files[0];
-  emits('update:modelValue', firstFile);
+  if (files && files.length > 0) {
+    const firstFile = files[0];
+    emits('update:modelValue', firstFile);
 
-  fileReader.onload = () => {
-    uploadedImage.value = fileReader.result
-  };
-
-  fileReader.readAsDataURL(firstFile)
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
+      uploadedImage.value = fileReader.result
+    }
+    fileReader.readAsDataURL(firstFile);
+  }
 }
 </script>
 

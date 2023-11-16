@@ -5,11 +5,11 @@ const props = defineProps<{
   user: any
 }>()
 
-const image = computed(() => {
+const image = computed<string>(() => {
   return props.user?.image
 })
 
-const fullName = computed(() => {
+const fullName = computed<string>(() => {
   return `${props.user?.firstName} ${props.user?.lastName}`
 })
 
