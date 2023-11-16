@@ -6,7 +6,7 @@ const props = defineProps<{
 }>()
 
 const image = computed<string>(() => {
-  return props.user?.image
+  return props?.user?.image
 })
 
 const fullName = computed<string>(() => {

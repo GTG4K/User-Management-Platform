@@ -54,6 +54,7 @@ const getCurrentPageUsers = async () => {
       userStore.setUsers(userPage, users)
     }
   } catch (error) {
+    userIsLoading.value = false
     console.error('Error fetching data:', error);
   }
 }
