@@ -23,6 +23,16 @@ async function addUser(data: FormData) {
     }
 }
 
+async function editUser(userID:number ,data: FormData) {
+    try {
+        const response = await multipartInstance.patch(`users/${userID}`, data);
+        console.log(response.data)
+        return response.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function getUserById(id: number) {
     try {
         const response = await instance.get(`users/${id}`);
@@ -43,4 +53,4 @@ async function deleteUserById(id: number) {
     }
 }
 
-export {getUsers, addUser, getUserById, deleteUserById}
+export {getUsers, addUser, getUserById, editUser, deleteUserById}

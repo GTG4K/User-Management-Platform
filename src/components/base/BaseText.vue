@@ -30,5 +30,5 @@ const inputStyling = computed(() => {
     <input :type="props.type || 'text'" :value="props.modelValue" :placeholder="props.placeholder" @input="updateInput"
            class="bg-transparent flex-grow pl-3 outline-0 text-white-slate"/>
   </div>
-  <p v-if="props.error" class="text-red-500 text-xs">{{ props.error }}</p>
+  <p v-if="props.error" v-html="props.error" class="text-red-500 text-xs"></p>
 </template>

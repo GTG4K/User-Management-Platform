@@ -20,6 +20,18 @@ export const useUsersStore = defineStore('users', {
             user.image = placeholder
             this.users[1].push(user)
         },
+        updateUser(userID: number, user: IUser) {
+            for (let page in this.users) {
+                if (this.users.hasOwnProperty(page)) {
+                    const currentPage = this.users[page]
+                    const index = currentPage.findIndex(user => user.id === userID)
+                    if (index !== -1) {
+                        currentPage[index] = user
+                        return
+                    }
+                }
+            }
+        },
         deleteUser(userID: number) {
             for (let page in this.users) {
                 if (this.users.hasOwnProperty(page)) {

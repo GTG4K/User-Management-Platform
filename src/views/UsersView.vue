@@ -15,27 +15,21 @@ const searchValue = ref<string>("")
 const router = useRouter()
 
 const limit: number = 12
-const total = computed(()=>{
+const total = computed(() => {
   return userStore.getTotalUsers
 })
 
 const usersAreLoading = ref<boolean>(true);
 
 onMounted(async () => {
-  try {
-    if (!userStore.getUsersByPage(currentPage.value)) {
-      const {users, total} = await getUsers(currentPage.value);
-      userStore.setTotal(total)
-      userStore.setUsers(currentPage.value, users)
-    }
-    usersAreLoading.value = false;
-  } catch (error) {
-    console.error('Error fetching data:', error);
-    usersAreLoading.value = false;
-  }
+  getCurrentPageUsers()
 })
 
 watch(currentPage, async () => {
+  getCurrentPageUsers()
+})
+
+const getCurrentPageUsers = async () => {
   usersAreLoading.value = true;
   try {
     if (!userStore.getUsersByPage(currentPage.value)) {
@@ -48,7 +42,7 @@ watch(currentPage, async () => {
     console.error('Error fetching data:', error);
     usersAreLoading.value = false;
   }
-})
+}
 
 const userList = computed(() => {
   if (searchValue.value) return userStore.getUsersBySearch(searchValue.value)
