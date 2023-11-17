@@ -1,18 +1,65 @@
-# Vue 3 + TypeScript + Vite
+# User Management Platform | Lavapi
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+## Table of Contents
 
-## Recommended IDE Setup
+- [Prerequisites](#prerequisites)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## Prerequisites
 
-## Type Support For `.vue` Imports in TS
+- **Node JS** (version 12.X and up)
+- **npm** (version 6 and up)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+## Tech Stack
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+- **Vue3:** A dynamic front-end framework for creating interactive user interfaces.
+- **TypeScript:** Enhances code quality and maintainability through strong typing.
+- **Pinia:** Manages application state for clean and efficient data flow.
+- **Vue Router:** Facilitates seamless navigation within the application.
+- **Axios:** Handles HTTP requests for fast and secure data retrieval.
+- **TailwindCSS:** Provides a utility-first approach for stylish and consistent styling.
+- **DummyJson:** Dummy JSON API for testing purposes.
 
-1. Disable the built-in TypeScript Extension
-   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+## Getting Started
+
+1. Clone the user-management-platform repository from GitHub:
+
+```sh
+   git clone https://github.com/GTG4K/User-Management-Platform.git
+```
+
+2. Install the dependencies.
+
+```sh
+npm install
+```
+
+3. now you can run the application from terminal:
+
+```sh
+npm run dev
+```
+
+### Project Structure
+
+```bash
+├── node_modules         # External packages
+├── public               # Public directories
+└── src                  # Project source codes
+    ├── assets           # Project images and fonts
+    ├── components       # Vue components
+        └── base         # Reusable, generic components
+    ├── config           # Package configuration
+    ├── router           # Project router
+    ├── services         # Backend configuration
+    ├── store            # State management
+    ├── ts               # Custom TypeScript interfaces and enums
+    │   ├── enums
+    │   └── interfaces
+    ├── Util             # Utility packages
+    │   └── validators   # Utility for validation
+    └── views            # Router components
+
+```
