@@ -28,12 +28,11 @@ const formIsValid = (): boolean => {
   clearErrors()
 
   emailError.value = isEmail(email.value);
-  ageError.value = isNumber(age.value);
-  firstNameError.value = isEmpty(firstName.value);
-  lastNameError.value = isEmpty(lastName.value);
-  ageError.value = isEmpty(String(age.value));
-  emailError.value = isEmpty(email.value);
-
+  ageError.value += isNumber(age.value);
+  firstNameError.value += isEmpty(firstName.value);
+  lastNameError.value += isEmpty(lastName.value);
+  ageError.value += isEmpty(String(age.value));
+  emailError.value += isEmpty(email.value);
 
   return validationPassed([firstNameError.value, lastNameError.value, emailError.value, ageError.value])
 }
