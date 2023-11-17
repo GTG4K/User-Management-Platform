@@ -55,7 +55,6 @@ const getCurrentPageUsers = async (): Promise<void> => {
     }
   } catch (error) {
     userIsLoading.value = false
-    console.error('Error fetching data:', error);
   }
 }
 

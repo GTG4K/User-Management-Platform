@@ -6,7 +6,7 @@ import {EUserActions, EUserGetters} from "../ts/enums/store/user.enum.ts";
 
 export const useUserStore = defineStore('users', {
     state: (): IUserState => ({
-        users: {}, // Initial user state is null
+        users: {},
         total: 0
     }),
     actions: {

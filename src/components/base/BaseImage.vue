@@ -20,7 +20,6 @@ const updateFile = (e: Event) => {
     const fileReader = new FileReader();
     fileReader.onload = () => {
       uploadedImage.value = fileReader.result
-      console.log(typeof fileReader.result)
     }
     fileReader.readAsDataURL(firstFile);
   }
@@ -35,7 +34,7 @@ const updateFile = (e: Event) => {
       Upload Image.
     </label>
     <label
-        class="relative flex gap-2 transition-all w-full border border-white/20 rounded flex items-center text-sm p-2 hover:bg-accent/20 cursor-pointer text-white-slate"
+        class="relative flex gap-2 transition-all w-full border border-white/20 rounded items-center text-sm p-2 hover:bg-accent/20 cursor-pointer text-white-slate"
         v-else for="image">
       <img :src="uploadedImage" alt="image preview" class="h-20 object-cover rounded">
       Upload another image?
